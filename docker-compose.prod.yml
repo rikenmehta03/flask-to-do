@@ -1,0 +1,15 @@
+version: '3.5'
+services:
+  web_prod:
+    build: .
+    ports:
+     - "3000:4000"
+    volumes:
+     - .:/app
+    environment:
+     - ENV=production
+     - PORT=4000
+     - DB=mongodb://localhost:27017/webProd
+networks: 
+  default:
+    name: web_prod

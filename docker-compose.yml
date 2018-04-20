@@ -1,0 +1,15 @@
+version: '3.5'
+services:
+  web_dev:
+    build: .
+    ports:
+     - "4000:4000"
+    volumes:
+     - .:/app
+    environment:
+     - ENV=development
+     - PORT=4000
+     - DB=mongodb://localhost:27017/webDev
+networks: 
+  default:
+    name: web_dev

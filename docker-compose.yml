@@ -5,11 +5,12 @@ services:
     ports:
      - "4000:4000"
     volumes:
-     - .:/app
+     - .:/usr/src/app
     environment:
      - ENV=development
      - PORT=4000
      - DB=mongodb://mongodb:27017/todoDev
+     - SECRET='to-do-app-secret'
   mongodb:
     image: mongo:latest
     container_name: "mongodb"

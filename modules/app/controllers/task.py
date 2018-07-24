@@ -13,7 +13,7 @@ LOG = logger.get_root_logger(
 
 
 @app.route('/task', methods=['GET', 'POST', 'DELETE', 'PATCH'])
-@jwt_required
+# @jwt_required
 def task():
     ''' route read tasks '''
     if request.method == 'GET':
@@ -56,3 +56,24 @@ def task():
             return jsonify({'ok': True, 'message': 'record updated'}), 200
         else:
             return jsonify({'ok': False, 'message': 'Bad request parameters: {}'.format(data['message'])}), 400
+
+
+@app.route('/list/task', methods=['GET'])
+# @jwt_required
+def list_tasks():
+    ''' route to get all the tasks for a user '''
+    # user = get_jwt_identity()
+    user = {'email': 'riken.mehta03@gmail.com'}
+    if request.method == 'GET':
+        query = request.args
+        data = mongo.db.tasks.find({'email': user['email']})
+        if query.get('group', None):
+            return_data = {}
+            for task in data:
+                try:
+                    return_data[task['status']].append(task)
+                except:
+                    return_data[task['status']] = [task]
+        else:
+            return_data = list(data)
+        return jsonify({'ok': True, 'data': return_data})

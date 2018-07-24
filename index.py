@@ -8,6 +8,8 @@ ROOT_PATH = os.path.dirname(os.path.realpath(__file__))
 os.environ.update({'ROOT_PATH': ROOT_PATH})
 sys.path.append(os.path.join(ROOT_PATH, 'modules'))
 
+PUBLIC_PATH = os.path.join(ROOT_PATH, 'public')
+
 import logger  # noqa
 from app import app  # noqa
 
@@ -29,14 +31,14 @@ def not_found(error):
 @app.route('/')
 def index():
     """ static files serve """
-    return send_from_directory('dist', 'index.html')
+    return send_from_directory(PUBLIC_PATH, 'index.html')
 
 
 @app.route('/<path:path>')
 def static_proxy(path):
     """ static folder serve """
     file_name = path.split('/')[-1]
-    dir_name = os.path.join('dist', '/'.join(path.split('/')[:-1]))
+    dir_name = os.path.join(PUBLIC_PATH, '/'.join(path.split('/')[:-1]))
     return send_from_directory(dir_name, file_name)
 
 

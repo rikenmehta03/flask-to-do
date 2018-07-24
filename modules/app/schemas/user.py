@@ -26,7 +26,7 @@ def validate_user(data):
     try:
         validate(data, user_schema)
     except ValidationError as e:
-        return False
+        return {'ok': False, 'message': e}
     except SchemaError as e:
-        return False
-    return data
+        return {'ok': False, 'message': e}
+    return {'ok': True, 'data': data}

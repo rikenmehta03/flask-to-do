@@ -24,7 +24,8 @@ def unauthorized_response(callback):
 def auth_user():
     ''' auth endpoint '''
     data = validate_user(request.get_json())
-    if data:
+    if data['ok']:
+        data = data['data']
         user = mongo.db.users.find_one({'email': data['email']}, {"_id": 0})
         LOG.debug(user)
         if user and flask_bcrypt.check_password_hash(user['password'], data['password']):
@@ -37,20 +38,21 @@ def auth_user():
         else:
             return jsonify({'ok': False, 'message': 'invalid username or password'}), 401
     else:
-        return jsonify({'ok': False, 'message': 'Bad request parameters!'}), 400
+        return jsonify({'ok': False, 'message': 'Bad request parameters: {}'.format(data['message'])}), 400
 
 
 @app.route('/register', methods=['POST'])
 def register():
     ''' register user endpoint '''
     data = validate_user(request.get_json())
-    if data:
+    if data['ok']:
+        data = data['data']
         data['password'] = flask_bcrypt.generate_password_hash(
             data['password'])
         mongo.db.users.insert_one(data)
         return jsonify({'ok': True, 'message': 'User created successfully!'}), 200
     else:
-        return jsonify({'ok': False, 'message': 'Bad request parameters!'}), 400
+        return jsonify({'ok': False, 'message': 'Bad request parameters: {}'.format(data['message'])}), 400
 
 
 @app.route('/refresh', methods=['POST'])

@@ -75,7 +75,7 @@ def user():
         data = mongo.db.users.find_one(query, {"_id": 0})
         return jsonify({'ok': True, 'data': data}), 200
 
-    data = request.json()
+    data = request.get_json()
     if request.method == 'DELETE':
         if data.get('email', None) is not None:
             db_response = mongo.db.users.delete_one({'email': data['email']})

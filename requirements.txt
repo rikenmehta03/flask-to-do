@@ -1,5 +1,5 @@
 requests>=2.20.0
-Flask==0.12.2
+Flask==0.12.3
 pymongo==3.4.0
 flask_pymongo==0.5.1
 Flask_JWT_Extended==3.7.2

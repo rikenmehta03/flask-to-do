@@ -59,11 +59,10 @@ def task():
 
 
 @app.route('/list/task', methods=['GET'])
-# @jwt_required
+@jwt_required
 def list_tasks():
     ''' route to get all the tasks for a user '''
-    # user = get_jwt_identity()
-    user = {'email': 'riken.mehta03@gmail.com'}
+    user = get_jwt_identity()
     if request.method == 'GET':
         query = request.args
         data = mongo.db.tasks.find({'email': user['email']})
